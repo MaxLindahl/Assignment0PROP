@@ -20,7 +20,7 @@ public class Program {
 				inputFileName = args[0];
 				outputFileName = args[1];
 				
-				parser = new Parser();
+				parser = (IParser) new Parser();
 				parser.open(inputFileName);
 				root = parser.parse();
 				builder = new StringBuilder();

@@ -13,7 +13,7 @@ Tokenizer t = null;
      * Parses a program from file returning a parse tree (the root node of a parse tree).
      */
     INode parse() throws IOException, TokenizerException, ParserException{
-
+        return null;
     }
 
     /**

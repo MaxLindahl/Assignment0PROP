@@ -1,15 +1,13 @@
 package PROPassignment0;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
 
 public class Tokenizer {
 
     private static Map<Character, Token> symbols = null;
-    private static HashSet<String> nouns = null;
-    private static HashSet<String> verbs = null;
-    private static HashSet<String> determiners = null;
 
     private Scanner scanner = null;
     private Lexeme current = null;
@@ -17,23 +15,21 @@ public class Tokenizer {
 
 
     public Tokenizer() {
+        symbols = new HashMap<Character, Token>();
+        symbols.put('=',Token.ASSIGN_OP);
+        symbols.put(';',Token.SEMICOLON);
+        symbols.put('+',Token.ADD_OP);
+        symbols.put('-',Token.SUB_OP);
+        symbols.put('*',Token.MULT_OP);
+        symbols.put('/',Token.DIV_OP);
+        symbols.put('(',Token.LEFT_PAREN);
+        symbols.put(')',Token.RIGHT_PAREN);
 
-       /* symbols = new HashMap<Character, Token>();
-        nouns = new HashSet<String>();
-        verbs = new HashSet<String>();
-        determiners = new HashSet<String>();
+        for(int i = 0; i<10;i++){
+            symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
+        }
 
-        symbols.put('.', Token.STOP);
-        symbols.put(Scanner.EOF, Token.EOF);
 
-        verbs.add("scares");
-        verbs.add("hates");
-
-        nouns.add("cat");
-        nouns.add("mouse");
-
-        determiners.add("a");
-        determiners.add("the");*/
     }
 
     /**
@@ -43,7 +39,7 @@ public class Tokenizer {
         scanner = new Scanner();
         scanner.open(fileName);
         scanner.moveNext();
-        next = extractLexeme();
+       // next = extractLexeme();
     }
 
     /**
@@ -60,8 +56,8 @@ public class Tokenizer {
         if (scanner == null)
             throw new IOException("No open file.");
         current = next;
-        if (next.token() != Token.EOF)
-            next = extractLexeme();
+       // if (next.token() != Token.EOF)
+         //   next = extractLexeme();
     }
 
     /**
@@ -70,6 +66,15 @@ public class Tokenizer {
     public void close() throws IOException {
         if (scanner != null)
             scanner.close();
+    }
+    public static void main(String[] args) {
+
+        try {
+            Tokenizer t = new Tokenizer();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 }
