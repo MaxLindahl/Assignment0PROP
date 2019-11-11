@@ -1,4 +1,4 @@
-package prop.assignment0;
+package PROPassignment0;
 
 public enum Token {
 	NULL, IDENT, INT_LIT, ADD_OP, SUB_OP, MULT_OP, DIV_OP, ASSIGN_OP, 

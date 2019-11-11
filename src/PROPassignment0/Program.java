@@ -1,4 +1,4 @@
-package prop.assignment0;
+package PROPassignment0;
 
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;

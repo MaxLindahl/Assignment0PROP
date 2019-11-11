@@ -1,4 +1,4 @@
-package prop.assignment0;
+package PROPassignment0;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

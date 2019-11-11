@@ -1,4 +1,4 @@
-package prop.assignment0;
+package PROPassignment0;
 
 public class TokenizerException extends Exception {
 	public TokenizerException(String message) {

@@ -1,4 +1,4 @@
-package prop.assignment0;
+package PROPassignment0;
 
 public class Lexeme {
 	private Object value;
