@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class Tokenizer {
 
     private static Map<Character, Token> symbols = null;
-    private static HashSet<Integer> integers =null;
+    private static HashSet<Character> integers =null;
     private static HashSet<Character> letters = null;
 
     private Scanner scanner = null;
@@ -28,9 +28,9 @@ public class Tokenizer {
         symbols.put(')',Token.RIGHT_PAREN);
 
 
-        integers = new HashSet<Integer>();
+        integers = new HashSet<Character>();
         for(int i = 0; i<10;i++){
-            integers.add(i);
+            integers.add(Integer.toString(i).charAt(0));
             //symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
             System.out.println(i);
             //digit
@@ -54,7 +54,7 @@ public class Tokenizer {
         scanner = new Scanner();
         scanner.open(fileName);
         scanner.moveNext();
-       // next = extractLexeme();
+       next = extractLexeme();
     }
 
     /**
