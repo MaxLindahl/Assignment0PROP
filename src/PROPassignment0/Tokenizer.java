@@ -8,6 +8,8 @@ import java.util.HashSet;
 public class Tokenizer {
 
     private static Map<Character, Token> symbols = null;
+    private static HashSet<Integer> integers =null;
+    private static HashSet<Character> letters = null;
 
     private Scanner scanner = null;
     private Lexeme current = null;
@@ -25,10 +27,23 @@ public class Tokenizer {
         symbols.put('(',Token.LEFT_PAREN);
         symbols.put(')',Token.RIGHT_PAREN);
 
+
+        integers = new HashSet<Integer>();
         for(int i = 0; i<10;i++){
-            symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
+            integers.add(i);
+            //symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
+            System.out.println(i);
+            //digit
         }
 
+        letters = new HashSet<Character>();
+        for (char alphabet = 'a'; alphabet <= 'z'; alphabet++) {
+            //symbols.put(alphabet, Token.IDENT);
+            letters.add(alphabet);
+            System.out.println(alphabet);
+        }
+
+        System.out.println(symbols);
 
     }
 
@@ -56,8 +71,43 @@ public class Tokenizer {
         if (scanner == null)
             throw new IOException("No open file.");
         current = next;
-       // if (next.token() != Token.EOF)
-         //   next = extractLexeme();
+        if (next.token() != Token.EOF)
+            next = extractLexeme();
+    }
+    private void consumeWhiteSpaces() throws IOException {
+        while (Character.isWhitespace(scanner.current())){
+            scanner.moveNext();
+        }
+    }
+
+    private Lexeme extractLexeme() throws IOException, TokenizerException {
+        consumeWhiteSpaces();
+
+        Character ch = scanner.current();
+        StringBuilder strBuilder = new StringBuilder();
+
+        if (ch == Scanner.EOF)
+            return new Lexeme(ch, Token.EOF);
+        else if (Character.isLetter(ch)) {
+            while (Character.isLetter(scanner.current())) {
+                strBuilder.append(scanner.current());
+                scanner.moveNext();
+            }
+            String lexeme = strBuilder.toString();
+            //System.out.println(lexeme);
+
+            if (integers.contains(lexeme)) {
+                return new Lexeme(lexeme, Token.INT_LIT);
+            } else if (letters.contains(lexeme)) {
+                return new Lexeme(lexeme, Token.IDENT);
+            } else throw new TokenizerException("Unknown lexeme: " + strBuilder.toString());
+        }
+        else if (symbols.containsKey(ch)) {
+            scanner.moveNext();
+            return new Lexeme(ch, symbols.get(ch));
+        }
+        else
+            throw new TokenizerException("Unknown character: " + String.valueOf(ch));
     }
 
     /**
@@ -71,7 +121,7 @@ public class Tokenizer {
 
         try {
             Tokenizer t = new Tokenizer();
-
+            t.open("program1.txt");
         } catch (Exception e) {
             System.out.println(e);
         }
