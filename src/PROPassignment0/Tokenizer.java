@@ -24,6 +24,8 @@ public class Tokenizer {
         symbols.put('/',Token.DIV_OP);
         symbols.put('(',Token.LEFT_PAREN);
         symbols.put(')',Token.RIGHT_PAREN);
+        symbols.put('{',Token.LEFT_CURLY);
+        symbols.put('}',Token.RIGHT_CURLY);
 
         for(int i = 0; i<10;i++){
             symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
