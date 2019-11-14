@@ -16,20 +16,19 @@ public class Tokenizer {
 
     public Tokenizer() {
         symbols = new HashMap<Character, Token>();
-        symbols.put('=', Token.ASSIGN_OP);
-        symbols.put(';', Token.SEMICOLON);
-        symbols.put('+', Token.ADD_OP);
-        symbols.put('-', Token.SUB_OP);
-        symbols.put('*', Token.MULT_OP);
-        symbols.put('/', Token.DIV_OP);
-        symbols.put('(', Token.LEFT_PAREN);
-        symbols.put(')', Token.RIGHT_PAREN);
+        symbols.put('=',Token.ASSIGN_OP);
+        symbols.put(';',Token.SEMICOLON);
+        symbols.put('+',Token.ADD_OP);
+        symbols.put('-',Token.SUB_OP);
+        symbols.put('*',Token.MULT_OP);
+        symbols.put('/',Token.DIV_OP);
+        symbols.put('(',Token.LEFT_PAREN);
+        symbols.put(')',Token.RIGHT_PAREN);
+        symbols.put('{',Token.LEFT_CURLY);
+        symbols.put('}',Token.RIGHT_CURLY);
 
-        for (int i = 0; i < 10; i++) {
-            symbols.put(Integer.toString(i).charAt(0), Token.INT_LIT);
-            //symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
-            System.out.println(i);
-            //digit
+        for(int i = 0; i<10;i++){
+            symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
         }
 
         for (char alphabet = 'a'; alphabet <= 'z'; alphabet++) {
