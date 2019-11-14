@@ -66,10 +66,11 @@ public class Parser implements IParser {
         ExpressNode expressNode = null;
         public ExpressNode(Tokenizer t) throws IOException, TokenizerException {
             termNode = new TermNode(t);
-            if(t.current().token() != Token.EOF)
+            if(t.current().token() != Token.EOF && t.current().token() != Token.RIGHT_PAREN && t.current().token() != Token.SEMICOLON) {
                 l = t.current();
                 t.moveNext();
                 expressNode = new ExpressNode(t);
+            }
         }
 
 
@@ -86,12 +87,15 @@ public class Parser implements IParser {
 
     class TermNode implements INode{
         FactorNode factorNode = null;
+        Lexeme l = null;
         TermNode termNode = null;
         public TermNode(Tokenizer t) throws IOException, TokenizerException {
             factorNode = new FactorNode(t);
-            if(t.current().token() != Token.EOF)
+            if((t.current().token() != Token.EOF) &&(t.current().token() != Token.RIGHT_PAREN) && (t.current().token() != Token.SEMICOLON)) {
+                l = t.current();
+                t.moveNext();
                 termNode = new TermNode(t);
-
+            }
         }
 
 
@@ -108,15 +112,20 @@ public class Parser implements IParser {
 
     class FactorNode implements INode{
         ExpressNode expressNode = null;
-        Lexeme l = null;
+        Lexeme l1 = null;
+        Lexeme l2 = null;
 
         public FactorNode(Tokenizer t) throws IOException, TokenizerException {
             if(t.current().token() == Token.INT_LIT){
-                l = t.current();
+                l1 = t.current();
                 t.moveNext();
             }
             else if(t.current().token() != Token.EOF) {
+                l1 = t.current();
+                t.moveNext();
                 expressNode = new ExpressNode(t);
+                l2 = t.current();
+                t.moveNext();
             }
         }
 
