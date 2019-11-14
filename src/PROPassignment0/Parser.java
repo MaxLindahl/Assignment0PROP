@@ -2,7 +2,7 @@ package PROPassignment0;
 
 import java.io.IOException;
 
-public class Parser {
+public class Parser{
     Tokenizer t = null;
 
     void open(String fileName) throws IOException, TokenizerException{

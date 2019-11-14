@@ -27,6 +27,7 @@ public class Tokenizer {
         symbols.put('{',Token.LEFT_CURLY);
         symbols.put('}',Token.RIGHT_CURLY);
 
+/*
         for(int i = 0; i<10;i++){
             symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
         }
@@ -38,6 +39,7 @@ public class Tokenizer {
         }
 
         System.out.println(symbols);
+*/
 
     }
 
@@ -96,13 +98,15 @@ public class Tokenizer {
                     strBuilder.append(scanner.current());
                     scanner.moveNext();
                 }
+                moveNext();
                 String id = strBuilder.toString();
                 return new Lexeme(id, Token.INT_LIT);
             }
         else if (symbols.containsKey(ch)){
-            strBuilder
+            strBuilder.append(scanner.current());
             String id = strBuilder.toString();
-            return new Lexeme(id, )
+            scanner.moveNext();
+            return new Lexeme(id, symbols.get(ch));
         }
 
             throw new TokenizerException("error");
