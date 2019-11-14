@@ -2,10 +2,14 @@ package PROPassignment0;
 
 import java.io.IOException;
 
-public class Parser{
+public class Parser implements IParser {
     Tokenizer t = null;
 
-    void open(String fileName) throws IOException, TokenizerException{
+    public Parser(){
+
+    }
+
+    public void open(String fileName) throws IOException, TokenizerException{
         t = new Tokenizer();
         t.open(fileName);
         t.moveNext();
@@ -14,7 +18,7 @@ public class Parser{
     /**
      * Parses a program from file returning a parse tree (the root node of a parse tree).
      */
-    INode parse() throws IOException, TokenizerException, ParserException{
+    public INode parse() throws IOException, TokenizerException, ParserException{
         if(t == null)
             throw new IOException("No open file.");
         return new AssignNode(t);

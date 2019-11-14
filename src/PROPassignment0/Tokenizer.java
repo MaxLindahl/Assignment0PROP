@@ -98,7 +98,6 @@ public class Tokenizer {
                     strBuilder.append(scanner.current());
                     scanner.moveNext();
                 }
-                moveNext();
                 String id = strBuilder.toString();
                 return new Lexeme(id, Token.INT_LIT);
             }
