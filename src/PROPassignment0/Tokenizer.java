@@ -8,8 +8,6 @@ import java.util.HashSet;
 public class Tokenizer {
 
     private static Map<Character, Token> symbols = null;
-    private static HashSet<Character> integers =null;
-    private static HashSet<Character> letters = null;
 
     private Scanner scanner = null;
     private Lexeme current = null;
@@ -18,28 +16,25 @@ public class Tokenizer {
 
     public Tokenizer() {
         symbols = new HashMap<Character, Token>();
-        symbols.put('=',Token.ASSIGN_OP);
-        symbols.put(';',Token.SEMICOLON);
-        symbols.put('+',Token.ADD_OP);
-        symbols.put('-',Token.SUB_OP);
-        symbols.put('*',Token.MULT_OP);
-        symbols.put('/',Token.DIV_OP);
-        symbols.put('(',Token.LEFT_PAREN);
-        symbols.put(')',Token.RIGHT_PAREN);
+        symbols.put('=', Token.ASSIGN_OP);
+        symbols.put(';', Token.SEMICOLON);
+        symbols.put('+', Token.ADD_OP);
+        symbols.put('-', Token.SUB_OP);
+        symbols.put('*', Token.MULT_OP);
+        symbols.put('/', Token.DIV_OP);
+        symbols.put('(', Token.LEFT_PAREN);
+        symbols.put(')', Token.RIGHT_PAREN);
 
-
-        integers = new HashSet<Character>();
-        for(int i = 0; i<10;i++){
-            integers.add(Integer.toString(i).charAt(0));
+        for (int i = 0; i < 10; i++) {
+            symbols.put(Integer.toString(i).charAt(0), Token.INT_LIT);
             //symbols.put(Integer.toString(i).charAt(0),Token.INT_LIT);
             System.out.println(i);
             //digit
         }
 
-        letters = new HashSet<Character>();
         for (char alphabet = 'a'; alphabet <= 'z'; alphabet++) {
-            //symbols.put(alphabet, Token.IDENT);
-            letters.add(alphabet);
+            symbols.put(alphabet, Token.IDENT);
+
             System.out.println(alphabet);
         }
 
@@ -54,13 +49,13 @@ public class Tokenizer {
         scanner = new Scanner();
         scanner.open(fileName);
         scanner.moveNext();
-       next = extractLexeme();
+        next = extractLexeme();
     }
 
     /**
      * Returns the current token in the stream.
      */
-    Lexeme current(){
+    Lexeme current() {
         return current;
     }
 
@@ -74,8 +69,9 @@ public class Tokenizer {
         if (next.token() != Token.EOF)
             next = extractLexeme();
     }
+
     private void consumeWhiteSpaces() throws IOException {
-        while (Character.isWhitespace(scanner.current())){
+        while (Character.isWhitespace(scanner.current())) {
             scanner.moveNext();
         }
     }
@@ -86,29 +82,38 @@ public class Tokenizer {
         Character ch = scanner.current();
         StringBuilder strBuilder = new StringBuilder();
 
-        if (ch == Scanner.EOF)
+        if (ch == Scanner.EOF) {
             return new Lexeme(ch, Token.EOF);
-        else if (Character.isLetter(ch)) {
+        }else if (Character.isLetter(ch)) {
             while (Character.isLetter(scanner.current())) {
                 strBuilder.append(scanner.current());
                 scanner.moveNext();
             }
-            String lexeme = strBuilder.toString();
-            //System.out.println(lexeme);
+            String id = strBuilder.toString();
+            return new Lexeme(id, Token.IDENT);
+        }
+        else if (Character.isDigit(ch)) {
+                while (Character.isDigit(scanner.current())) {
+                    strBuilder.append(scanner.current());
+                    scanner.moveNext();
+                }
+                String id = strBuilder.toString();
+                return new Lexeme(id, Token.INT_LIT);
+            }
+        else if (symbols.containsKey(ch)){
 
-            if (integers.contains(lexeme)) {
-                return new Lexeme(lexeme, Token.INT_LIT);
-            } else if (letters.contains(lexeme)) {
-                return new Lexeme(lexeme, Token.IDENT);
-            } else throw new TokenizerException("Unknown lexeme: " + strBuilder.toString());
         }
-        else if (symbols.containsKey(ch)) {
-            scanner.moveNext();
-            return new Lexeme(ch, symbols.get(ch));
+
+            throw new TokenizerException("error");
         }
-        else
-            throw new TokenizerException("Unknown character: " + String.valueOf(ch));
-    }
+
+
+
+
+
+
+
+
 
     /**
      * Closes the file and releases any system resources associated with it.
