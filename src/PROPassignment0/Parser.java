@@ -34,12 +34,18 @@ public class Parser implements IParser {
 
     class AssignNode implements INode{
         ExpressNode expressNode = null;
-        Lexeme l = null;
+        Lexeme l1 = null;
+        Lexeme l2 = null;
+        Lexeme l3 = null;
 
         public AssignNode(Tokenizer t) throws IOException, TokenizerException {
-            l = t.current();
+            l1 = t.current();
+            t.moveNext();
+            l2 = t.current();
             t.moveNext();
             expressNode = new ExpressNode(t);
+            l3 = t.current();
+            t.moveNext();
         }
 
 
@@ -56,10 +62,13 @@ public class Parser implements IParser {
 
     class ExpressNode implements INode{
         TermNode termNode = null;
+        Lexeme l = null;
         ExpressNode expressNode = null;
         public ExpressNode(Tokenizer t) throws IOException, TokenizerException {
             termNode = new TermNode(t);
             if(t.current().token() != Token.EOF)
+                l = t.current();
+                t.moveNext();
                 expressNode = new ExpressNode(t);
         }
 
