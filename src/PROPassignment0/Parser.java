@@ -102,10 +102,13 @@ public class Parser implements IParser {
         Lexeme l = null;
 
         public FactorNode(Tokenizer t) throws IOException, TokenizerException {
-        l = t.current(); // HANTERA ELLER???!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        t.moveNext();
-        if(t.current().token() != Token.EOF)
-            expressNode = new ExpressNode(t);
+            if(t.current().token() == Token.INT_LIT){
+                l = t.current();
+                t.moveNext();
+            }
+            else if(t.current().token() != Token.EOF) {
+                expressNode = new ExpressNode(t);
+            }
         }
 
 
