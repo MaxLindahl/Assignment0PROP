@@ -100,7 +100,9 @@ public class Tokenizer {
                 return new Lexeme(id, Token.INT_LIT);
             }
         else if (symbols.containsKey(ch)){
-
+            strBuilder
+            String id = strBuilder.toString();
+            return new Lexeme(id, )
         }
 
             throw new TokenizerException("error");
