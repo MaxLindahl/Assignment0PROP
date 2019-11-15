@@ -56,6 +56,12 @@ public class Parser implements IParser {
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
+            builder.append("AssignmentNode\n");
+            builder.append("\t" + l1.toString() + "\n");
+            builder.append("\t" + l2.toString() + "\n");
+            builder.append("\tExpressionNode" + "\n");
+            expressNode.buildString(builder,1);
+            builder.append("\t" + l3.toString() + "\n");
 
         }
     }
@@ -81,6 +87,10 @@ public class Parser implements IParser {
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
+            for(int i = 0; i<=1; i++){//add tabs ,,, add function?
+                builder.append("\t");
+            }
+            builder.append("TermNode\n");
 
         }
     }

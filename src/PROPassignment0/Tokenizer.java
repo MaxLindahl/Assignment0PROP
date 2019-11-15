@@ -85,23 +85,21 @@ public class Tokenizer {
 
         if (ch == Scanner.EOF) {
             return new Lexeme(ch, Token.EOF);
-        }else if (Character.isLetter(ch)) {
+        }else if (Character.isLetter(ch)) { //Stora bokstäver?? åäö?
             while (Character.isLetter(scanner.current())) {
                 strBuilder.append(scanner.current());
                 scanner.moveNext();
             }
             String id = strBuilder.toString();
             return new Lexeme(id, Token.IDENT);
-        }
-        else if (Character.isDigit(ch)) {
+        }else if (Character.isDigit(ch)) {
                 while (Character.isDigit(scanner.current())) {
                     strBuilder.append(scanner.current());
                     scanner.moveNext();
                 }
                 String id = strBuilder.toString();
                 return new Lexeme(id, Token.INT_LIT);
-            }
-        else if (symbols.containsKey(ch)){
+        }else if (symbols.containsKey(ch)){
             strBuilder.append(scanner.current());
             String id = strBuilder.toString();
             scanner.moveNext();
