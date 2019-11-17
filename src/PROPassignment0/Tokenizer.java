@@ -8,6 +8,7 @@ import java.util.HashSet;
 public class Tokenizer {
 
     private static Map<Character, Token> symbols = null;
+    private static HashSet<Character> id = null;
 
     private Scanner scanner = null;
     private Lexeme current = null;
@@ -16,6 +17,7 @@ public class Tokenizer {
 
     public Tokenizer() {
         symbols = new HashMap<Character, Token>();
+        id = new HashSet<Character>();
         symbols.put('=',Token.ASSIGN_OP);
         symbols.put(';',Token.SEMICOLON);
         symbols.put('+',Token.ADD_OP);
@@ -26,6 +28,9 @@ public class Tokenizer {
         symbols.put(')',Token.RIGHT_PAREN);
         symbols.put('{',Token.LEFT_CURLY);
         symbols.put('}',Token.RIGHT_CURLY);
+
+        for(char alphabet = 'a'; alphabet <='z'; alphabet ++)
+            id.add(alphabet);
 
 /*
         for(int i = 0; i<10;i++){
@@ -85,8 +90,8 @@ public class Tokenizer {
 
         if (ch == Scanner.EOF) {
             return new Lexeme(ch, Token.EOF);
-        }else if (Character.isLetter(ch)) { //Stora bokstäver?? åäö?
-            while (Character.isLetter(scanner.current())) {
+        }else if (id.contains(ch)) {
+            while (id.contains(scanner.current())) {
                 strBuilder.append(scanner.current());
                 scanner.moveNext();
             }
