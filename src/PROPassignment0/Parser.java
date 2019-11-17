@@ -48,20 +48,29 @@ public class Parser implements IParser {
             t.moveNext();
         }
 
+        public void addTabs(StringBuilder builder, int tabs){
+            for(int i = 0; i<=tabs; i++){
+                builder.append("\t");
+            }
+        }
 
         @Override
         public Object evaluate(Object[] args) throws Exception {
-            return null;
+            return l1.value().toString() + " " + l2.value().toString() + " " +expressNode.evaluate(null).toString();
         }
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
             builder.append("AssignmentNode\n");
-            builder.append("\t" + l1.toString() + "\n");
-            builder.append("\t" + l2.toString() + "\n");
-            builder.append("\tExpressionNode" + "\n");
-            expressNode.buildString(builder,1);
-            builder.append("\t" + l3.toString() + "\n");
+            addTabs(builder, tabs);
+            builder.append(l1.toString() + "\n");
+            addTabs(builder, tabs);
+            builder.append(l2.toString() + "\n");
+            addTabs(builder, tabs);
+            builder.append("ExpressionNode" + "\n");
+            expressNode.buildString(builder,tabs+1);
+            addTabs(builder, tabs);
+            builder.append(l3.toString() + "\n");
 
         }
     }
@@ -79,18 +88,36 @@ public class Parser implements IParser {
             }
         }
 
+        public void addTabs(StringBuilder builder, int tabs){
+            for(int i = 0; i<=tabs; i++){
+                builder.append("\t");
+            }
+        }
 
         @Override
         public Object evaluate(Object[] args) throws Exception {
-            return null;
+            if(l!=null){
+                if(l.token()==Token.ADD_OP){
+                    return Double.parseDouble(String.valueOf(termNode.evaluate(null))) + Double.parseDouble(String.valueOf(expressNode.evaluate(null)));
+                }else{
+                    return Double.parseDouble(String.valueOf(termNode.evaluate(null))) - Double.parseDouble(String.valueOf(expressNode.evaluate(null)));
+                }
+            }
+            return termNode.evaluate(null);
         }
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
-            for(int i = 0; i<=1; i++){//add tabs ,,, add function?
-                builder.append("\t");
-            }
+            addTabs(builder, tabs);
             builder.append("TermNode\n");
+            termNode.buildString(builder, tabs+1);
+            if(l!=null){
+                addTabs(builder, tabs);
+                builder.append(l.toString()+"\n");
+                addTabs(builder, tabs);
+                builder.append("ExpressionNode\n");
+                expressNode.buildString(builder, tabs+1);
+            }
 
         }
     }
@@ -101,22 +128,43 @@ public class Parser implements IParser {
         TermNode termNode = null;
         public TermNode(Tokenizer t) throws IOException, TokenizerException {
             factorNode = new FactorNode(t);
-            if((t.current().token() != Token.EOF) &&(t.current().token() != Token.RIGHT_PAREN) && (t.current().token() != Token.SEMICOLON)) {
+            if((t.current().token() != Token.EOF) &&(t.current().token() != Token.RIGHT_PAREN) && (t.current().token() != Token.SEMICOLON) && (t.current().token() != Token.ADD_OP)&&(t.current().token() != Token.SUB_OP)) {
                 l = t.current();
                 t.moveNext();
                 termNode = new TermNode(t);
             }
         }
 
+        public void addTabs(StringBuilder builder, int tabs){
+            for(int i = 0; i<=tabs; i++){
+                builder.append("\t");
+            }
+        }
 
         @Override
         public Object evaluate(Object[] args) throws Exception {
-            return null;
+            if(l!=null){
+                if(l.token()==Token.MULT_OP){
+                    return Double.parseDouble(String.valueOf(factorNode.evaluate(null))) * Double.parseDouble(String.valueOf(termNode.evaluate(null)));
+                }else{
+                    return Double.parseDouble(String.valueOf(factorNode.evaluate(null))) / Double.parseDouble(String.valueOf(termNode.evaluate(null)));
+                }
+            }
+            return factorNode.evaluate(null);
         }
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
-
+            addTabs(builder, tabs);
+            builder.append("FactorNode\n");
+            factorNode.buildString(builder, tabs+1);
+            if(l!=null){
+                addTabs(builder, tabs);
+                builder.append(l.toString()+"\n");
+                addTabs(builder, tabs);
+                builder.append("TermNode\n");
+                termNode.buildString(builder, tabs+1);
+            }
         }
     }
 
@@ -130,7 +178,7 @@ public class Parser implements IParser {
                 l1 = t.current();
                 t.moveNext();
             }
-            else if(t.current().token() != Token.EOF) {
+            else if((t.current().token() != Token.EOF) && (t.current().token() != Token.MULT_OP)&&(t.current().token() != Token.DIV_OP)) {
                 l1 = t.current();
                 t.moveNext();
                 expressNode = new ExpressNode(t);
@@ -139,15 +187,35 @@ public class Parser implements IParser {
             }
         }
 
+        public void addTabs(StringBuilder builder, int tabs){
+            for(int i = 0; i<=tabs; i++){
+                builder.append("\t");
+            }
+        }
 
         @Override
         public Object evaluate(Object[] args) throws Exception {
-            return null;
+            if(l1.token()== Token.INT_LIT){
+                return l1.value();
+            }
+            return expressNode.evaluate(null);
         }
 
         @Override
         public void buildString(StringBuilder builder, int tabs) {
+            if(l2==null){
+                addTabs(builder, tabs);
+                builder.append(l1.toString()+"\n");
+            }else{
+                addTabs(builder, tabs);
+                builder.append(l1.toString()+"\n");
+                addTabs(builder, tabs);
+                builder.append("ExpressionNode\n");
+                expressNode.buildString(builder, tabs+1);
+                addTabs(builder, tabs);
+                builder.append(l2.toString()+"\n");
 
+            }
         }
     }
 
