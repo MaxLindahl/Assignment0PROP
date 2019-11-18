@@ -40,19 +40,19 @@ public class Parser implements IParser {
 
         public AssignNode(Tokenizer t) throws IOException, TokenizerException {
             if(t.current().token() != Token.IDENT){
-                throw new TokenizerException("Invalid token");
+                throw new TokenizerException(t.current() + "is an invalid token. Excpected: IDENT");
             }
             l1 = t.current();
             t.moveNext();
             if(t.current().token() != Token.ASSIGN_OP){
-                throw new TokenizerException("Invalid token");
+                throw new TokenizerException(t.current() + "is an invalid token. Excpected: ASSIGN_OP");
             }
             l2 = t.current();
             t.moveNext();
 
             expressNode = new ExpressNode(t);
             if(t.current().token() != Token.SEMICOLON){
-                throw new TokenizerException("Invalid token");
+                throw new TokenizerException(t.current() + "is an invalid token. Excpected: SEMICOLON");
             }
             l3 = t.current();
             t.moveNext();
