@@ -39,13 +39,24 @@ public class Parser implements IParser {
         Lexeme l3 = null;
 
         public AssignNode(Tokenizer t) throws IOException, TokenizerException {
+            if(t.current().token() != Token.IDENT){
+                throw new TokenizerException("Invalid token");
+            }
             l1 = t.current();
             t.moveNext();
+            if(t.current().token() != Token.ASSIGN_OP){
+                throw new TokenizerException("Invalid token");
+            }
             l2 = t.current();
             t.moveNext();
+
             expressNode = new ExpressNode(t);
+            if(t.current().token() != Token.SEMICOLON){
+                throw new TokenizerException("Invalid token");
+            }
             l3 = t.current();
             t.moveNext();
+
         }
 
         public void addTabs(StringBuilder builder, int tabs){
