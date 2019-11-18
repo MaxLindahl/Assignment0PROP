@@ -67,7 +67,7 @@ public class Parser implements IParser {
 
         @Override
         public Object evaluate(Object[] args) throws Exception {
-            return l1.value().toString() + " " + l2.value().toString() + " " +expressNode.evaluate(null).toString();
+            return l1.value().toString() + " " + l2.value().toString() + " " +expressNode.evaluate(null).toString()+"\n";
         }
 
         @Override
