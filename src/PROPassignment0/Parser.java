@@ -93,6 +93,9 @@ public class Parser implements IParser {
         public ExpressNode(Tokenizer t) throws IOException, TokenizerException {
             termNode = new TermNode(t);
             if(t.current().token() != Token.EOF && t.current().token() != Token.RIGHT_PAREN && t.current().token() != Token.SEMICOLON) {
+                if(!(t.current().token() == Token.ADD_OP || t.current().token() == Token.SUB_OP)){
+                    throw new TokenizerException(t.current() + "is an invalid token. Excpected: ADD or SUB operator");
+                }
                 l = t.current();
                 t.moveNext();
                 expressNode = new ExpressNode(t);
@@ -140,6 +143,9 @@ public class Parser implements IParser {
         public TermNode(Tokenizer t) throws IOException, TokenizerException {
             factorNode = new FactorNode(t);
             if((t.current().token() != Token.EOF) &&(t.current().token() != Token.RIGHT_PAREN) && (t.current().token() != Token.SEMICOLON) && (t.current().token() != Token.ADD_OP)&&(t.current().token() != Token.SUB_OP)) {
+                if(!(t.current().token() == Token.MULT_OP || t.current().token() == Token.DIV_OP)){
+                    throw new TokenizerException(t.current() + "is an invalid token. Excpected: MULT or DIV operator");
+                }
                 l = t.current();
                 t.moveNext();
                 termNode = new TermNode(t);
@@ -190,9 +196,15 @@ public class Parser implements IParser {
                 t.moveNext();
             }
             else if((t.current().token() != Token.EOF) && (t.current().token() != Token.MULT_OP)&&(t.current().token() != Token.DIV_OP)) {
+                if(t.current().token() != Token.LEFT_PAREN){
+                    throw new TokenizerException(t.current() + "is an invalid token. Excpected: LEFT_PAREN");
+                }
                 l1 = t.current();
                 t.moveNext();
                 expressNode = new ExpressNode(t);
+                if(t.current().token() != Token.RIGHT_PAREN){
+                    throw new TokenizerException(t.current() + "is an invalid token. Excpected: RIGHT_PAREN");
+                }
                 l2 = t.current();
                 t.moveNext();
             }
@@ -216,7 +228,7 @@ public class Parser implements IParser {
         public void buildString(StringBuilder builder, int tabs) {
             if(l2==null){
                 addTabs(builder, tabs);
-                builder.append(l1.toString()+"\n");
+                builder.append(l1.token() + " " + Double.parseDouble(l1.value().toString())+"\n");
             }else{
                 addTabs(builder, tabs);
                 builder.append(l1.toString()+"\n");
