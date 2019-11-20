@@ -1,3 +1,5 @@
+//Max Lindahl
+//Moa Hoffström
 package PROPassignment0;
 
 import java.io.IOException;
